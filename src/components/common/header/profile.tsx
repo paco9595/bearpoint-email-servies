@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Button from "../button";
 import Image from "next/image";
-import { userAccount } from "@/types/userAccount";
 import { User } from "@supabase/supabase-js";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
