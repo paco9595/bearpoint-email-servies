@@ -16,7 +16,7 @@ export default async function Header() {
   } = await supabase.auth.getUser();
   const { data: projects }: SupabaseResponse<Tables<"project">> = await supabase
     .from("project")
-    .select("*");
+    .select("name,id");
 
   return (
     <div className="flex justify-between w-full sticky top-0 left-0 z-[10] border-b border-b[#000] px-10 items-center h-[80px] bg-white text-black">
