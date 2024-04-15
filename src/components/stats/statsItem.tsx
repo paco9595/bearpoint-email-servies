@@ -2,7 +2,7 @@ import { ArrowUp } from "lucide-react";
 
 export default function StatsItem({title, count, average}: {title: string, count: number, average: string}) {
   return (
-    <div className="px-4 md:border-r-2  border-b-2 md:border-b-0 last:border-r-0 py-4">
+    <div className="px-4 md:border-r-2  border-b-2 md:border-b-0 last:border-r-0 last:border-b-0 py-4">
       <h5 className="text-lg ">{title}</h5>
       <div className="flex justify-between items-center ">
         <span className="font-medium pt-2">{count}</span>

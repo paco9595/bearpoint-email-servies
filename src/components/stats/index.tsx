@@ -28,7 +28,7 @@ export default function Stats() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 bg-white border-slate-200 border rounded py-3">
+    <div className="grid grid-cols-1 md:grid-cols-3 bg-white border-slate-200 border rounded lg:py-3 px-3 lg:px-0">
       <StatsItem title="Subscribers" count={subscriber} average="100" />
       <StatsItem title="Open Rate" count={10} average="100" />
       <StatsItem title="click Rate" count={10} average="100" />
