@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(inter.className, 'h-screen flex flex-col')}>
         <Header />
-        <div className="grid grid-cols-[300px_1fr]  bg-slate-100 flex-1 ">
+        <div className="flex  bg-slate-100 flex-1 ">
           <Sidebar />
           {children}
         </div>
