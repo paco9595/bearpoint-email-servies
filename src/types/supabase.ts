@@ -62,6 +62,35 @@ export type Database = {
           },
         ]
       }
+      subscriber: {
+        Row: {
+          created_at: string
+          id: number
+          id_project: string
+          mail: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          id_project: string
+          mail: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          id_project?: string
+          mail?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_subscriber_id_project_fkey"
+            columns: ["id_project"]
+            isOneToOne: false
+            referencedRelation: "project"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
