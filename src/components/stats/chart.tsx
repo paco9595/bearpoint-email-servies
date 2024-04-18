@@ -17,7 +17,7 @@ export function SubscriptionChart({data}: {data: {month: string, count: number}[
       <ResponsiveContainer
         width="100%"
         height="100%"
-        className={" bg-white border-slate-200 border rounded"}
+        className={" bg-white border-slate-200 border rounded p-6"}
       >
         <LineChart
           width={500}
