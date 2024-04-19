@@ -3,8 +3,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import StatsItem from "./statsItem";
 import { SessionStorageEnum, getSessionStorage } from "@/utils/session-storage";
 import { useEffect, useState } from "react";
-import { SupabaseResponse } from "@/types/supabase/SupabaseReponse";
-import { Tables } from "@/types/supabase";
+import Card from "@/components/common/card";
 
 export default function Stats() {
   const [subscriber, setSubscriber] =
@@ -13,7 +12,6 @@ export default function Stats() {
   
   useEffect(() => {
     if(window){
-      console.log('testfdefdf')
       const {id}= getSessionStorage(SessionStorageEnum.currentProject);
       const fetchSubscribers = async () => {
         const {count} = await supabase
@@ -21,17 +19,16 @@ export default function Stats() {
         .select("*", { count: "exact", head: true })
         .eq('id_project', id)
         setSubscriber(count);
-        console.log(count)
       };
       fetchSubscribers()
     }
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 bg-white border-slate-200 border rounded lg:py-3 px-3 lg:px-0">
+    <Card className="grid grid-cols-1 md:grid-cols-3 border-slate-200 border">
       <StatsItem title="Subscribers" count={subscriber} average="100" />
       <StatsItem title="Open Rate" count={10} average="100" />
-      <StatsItem title="click Rate" count={10} average="100" />
-    </div>
+      <StatsItem title="Click Rate" count={10} average="100" />
+    </Card>
   );
 }
