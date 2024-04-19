@@ -7,17 +7,16 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  Legend,
 } from "recharts";
+import Card from "@/components/common/card";
 
 
 export function SubscriptionChart({data}: {data: {month: string, count: number}[]}) {
   return (
-    <div className="flex-1 ">
+    <Card className="flex-1 p-6">
       <ResponsiveContainer
         width="100%"
         height="100%"
-        className={" bg-white border-slate-200 border rounded p-6"}
       >
         <LineChart
           width={500}
@@ -43,6 +42,6 @@ export function SubscriptionChart({data}: {data: {month: string, count: number}[
           />
         </LineChart>
       </ResponsiveContainer>
-    </div>
+    </Card>
   );
 }

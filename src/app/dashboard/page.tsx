@@ -1,10 +1,12 @@
-"use client";
-import Stats from "@/components/stats";
-import { SubscriptionChart } from "@/components/stats/chart";
-import { Tables } from "@/types/supabase";
+'use client'
+import Resources from "@/components/dashboard/resources";
+import Stats from "@/components/dashboard/stats";
+import { SubscriptionChart } from "@/components/dashboard/stats/chart";
+import { groupDate } from "@/utils/groupDate";
+import { subtractionMonth } from "@/utils/sbstractionMonth";
 import { SessionStorageEnum, getSessionStorage } from "@/utils/session-storage";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const test = [
   {
@@ -37,49 +39,16 @@ const test = [
   },
 ];
 
-function subtractionMonth(numMonth: number) {
-  const now = new Date();
-  const month =
-    now.getMonth() - numMonth < 0
-      ? 11 + now.getMonth() - numMonth
-      : now.getMonth() - numMonth;
-  const year =
-    now.getMonth() - numMonth < 0 ? now.getFullYear() - 1 : now.getFullYear();
-  const date = new Date(`${year}-${month}-1`);
-  return `${year}-${month}-1 11:59:59.999999999`;
-}
-
-function groupDate(subscriptions: Tables<"subscriber">[]) {
-  const group = Object.groupBy(
-    subscriptions,
-    ({ created_at }: Tables<"subscriber">) => {
-      const data = new Date(created_at).getMonth() +1;
-      console.log(data);
-      return data;
-    }
-  );
-  Object.keys(group).map((month) => ({
-    month,
-    count:  group[month].length,
-  }));
-}
-
 export default function Dashboard() {
   const supabase = createClientComponentClient();
-  const [formatData, setFormatData] = useState<
-    { month: string; count: number }[]
-  >([]);
   useEffect(() => {
     const fetchData = async () => {
       const { id } = getSessionStorage(SessionStorageEnum.currentProject);
-      console.log(id, subtractionMonth(7));
       const { data: subscriptions } = await supabase
         .from("subscriber")
         .select("*")
         .eq("id_project", id)
         .gte("created_at", subtractionMonth(7));
-      console.log(groupDate(subscriptions ?? []));
-      // setFormatData(groupDate(subscriptions ?? []));
     };
     if (window) {
       fetchData();
@@ -87,14 +56,16 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[75%_25%] flex-1">
-      <div className="px-8 pt-4 flex flex-col">
+    <div className="grid grid-cols-1 lg:grid-cols-[75%_25%] flex-1 pt-4 px-4 ">
+      <div className="flex flex-col">
         <Stats />
-        <div className="flex flex-1 flex-col max-h-screen mt-5 mb-5">
+        <div className="flex flex-1 flex-col max-h-screen my-5">
           <SubscriptionChart data={test} />
         </div>
       </div>
-      <div className="hidden lg:block"></div>
+      <div className="hidden lg:block ml-8 mb-5">
+        <Resources/>
+      </div>
     </div>
   );
 }
