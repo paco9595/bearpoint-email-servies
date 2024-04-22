@@ -56,7 +56,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[75%_25%] flex-1 pt-4 px-4 ">
+    <div className="grid grid-cols-1 lg:grid-cols-[75%_25%] flex-1 ">
       <div className="flex flex-col">
         <Stats />
         <div className="flex flex-1 flex-col max-h-screen my-5">
