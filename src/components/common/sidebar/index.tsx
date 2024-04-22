@@ -9,7 +9,7 @@ export default function Sidebar() {
           <LayoutDashboard className="mr-3" />
           <span className="hidden lg:block">Dashboard</span>
         </Link>
-        <Link href={"/dashboard"} className="flex my-8 px-5 ">
+        <Link href={"/dashboard/write"} className="flex my-8 px-5 ">
           <Pen className="mr-3" />
           <span className="hidden lg:block">Write</span>
         </Link>
