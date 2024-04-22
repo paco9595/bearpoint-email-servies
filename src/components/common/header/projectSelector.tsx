@@ -1,54 +1,20 @@
-"use client";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Tables } from "@/types/supabase";
-import {
-  getSessionStorage,
-  SessionStorageEnum,
-  setSessionStorage,
-} from "@/utils/session-storage";
-import { ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { SupabaseResponse } from "@/types/supabase/SupabaseReponse";
+import DropDownHeader from "./dropdownHeader";
 
-export default function ProjectSelector({
-  projects,
-}: {
-  projects: Tables<"project">[];
-}) {
-  const [selected, setSelected] = useState<Tables<"project">>(projects[0]);
+export default async function ProjectSelector() {
 
-  useEffect(()=> {
-    if(window) {
-      setSelected(getSessionStorage(SessionStorageEnum.currentProject));
-    }
-  },[])
+  const selectedProject = cookies().get('selectedProject');
+  const supabase = await createServerComponentClient({cookies}) 
 
-  const onClickHandler = (project: Tables<"project">) => {
-    setSelected(project);
-    setSessionStorage(SessionStorageEnum.currentProject, project);
-  };
+  const { data: projects }: SupabaseResponse<Tables<"project">> = await supabase
+  .from("project")
+  .select("name,id");
 
+  
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="px-3 py-1 h-fit my-auto flex w-full max-w-48 justify-between rounded-sm border-2 border-black">
-        <div className="truncate">{selected.name}</div>
-        <ChevronDown />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-full">
-        {projects?.map((project) => (
-          <DropdownMenuItem
-            key={project.id}
-            onClick={() => onClickHandler(project)}
-          >
-            {project.name}
-          </DropdownMenuItem>
-        ))}
-        <DropdownMenuItem>New Project</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <DropDownHeader projects={projects} selectedProject={selectedProject}/>
   );
 }
