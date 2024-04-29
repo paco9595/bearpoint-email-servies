@@ -22,13 +22,13 @@ export async function middleware(req: NextRequest) {
 
   console.log("test ", reqUrl.pathname === "/");
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: {  user },
+  } = await supabase.auth.getUser();
 
-  if (unAuthPage && session) {
+  if (unAuthPage && user) {
     return NextResponse.redirect(`http://${reqUrl.host}/dashboard`);
   }
-  if (!session && !unAuthPage) {
+  if (!user && !unAuthPage) {
     return NextResponse.redirect(`http://${reqUrl.host}/sign-in`);
   }
   return res;
