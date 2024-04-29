@@ -12,12 +12,12 @@ export default function Stats() {
   
   useEffect(() => {
     if(window){
-      const {id}= getSessionStorage(SessionStorageEnum.currentProject);
+     // const {id}= getSessionStorage(SessionStorageEnum.currentProject);
       const fetchSubscribers = async () => {
         const {count} = await supabase
         .from("subscriber")
         .select("*", { count: "exact", head: true })
-        .eq('id_project', id)
+        .eq('id_project','1')
         setSubscriber(count);
       };
       fetchSubscribers()
