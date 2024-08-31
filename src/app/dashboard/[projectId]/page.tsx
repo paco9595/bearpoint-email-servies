@@ -1,12 +1,11 @@
-'use client'
 import Resources from "@/components/dashboard/resources";
 import Stats from "@/components/dashboard/stats";
 import { SubscriptionChart } from "@/components/dashboard/stats/chart";
-import { groupDate } from "@/utils/groupDate";
-import { subtractionMonth } from "@/utils/sbstractionMonth";
-import { SessionStorageEnum, getSessionStorage } from "@/utils/session-storage";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useEffect } from "react";
+import { subtractionMonth } from "@/utils/subtractionMonth";
+import {
+  createServerComponentClient,
+} from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 const test = [
   {
@@ -39,21 +38,19 @@ const test = [
   },
 ];
 
-export default function Dashboard() {
-  const supabase = createClientComponentClient();
-  useEffect(() => {
-    const fetchData = async () => {
-      const { id } = getSessionStorage(SessionStorageEnum.currentProject);
-      const { data: subscriptions } = await supabase
-        .from("subscriber")
-        .select("*")
-        .eq("id_project", id)
-        .gte("created_at", subtractionMonth(7));
-    };
-    if (window) {
-      fetchData();
-    }
-  }, []);
+export default async function Dashboard({
+  params: { projectId },
+}: {
+  params: { projectId: string };
+}) {
+
+  const supabase = createServerComponentClient({ cookies });
+  
+  const { data: subscriptions } = await supabase
+    .from("subscriber")
+    .select("*")
+    .eq("id_project", projectId)
+    .gte("created_at", subtractionMonth(7));
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[75%_25%] flex-1 ">
@@ -64,7 +61,7 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="hidden lg:block ml-8 mb-5">
-        <Resources/>
+        <Resources />
       </div>
     </div>
   );
