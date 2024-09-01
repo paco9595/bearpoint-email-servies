@@ -1,3 +1,4 @@
+'use client'
 import Card from "@/components/common/card";
 import { CopyIcon } from "lucide-react";
 

@@ -24,13 +24,23 @@ export async function middleware(req: NextRequest) {
   const {
     data: {  user },
   } = await supabase.auth.getUser();
+  const {data: project} = await supabase.from('project').select('id');
 
   if (unAuthPage && user) {
-    return NextResponse.redirect(`http://${reqUrl.host}/dashboard`);
+    return NextResponse.redirect(`http://${reqUrl.host}/dashboard/${project ? project[0]?.id : 'newProject'}`);
   }
   if (!user && !unAuthPage) {
     return NextResponse.redirect(`http://${reqUrl.host}/sign-in`);
   }
+
+  if(reqUrl.pathname.endsWith('/dashboard')) {
+    return NextResponse.redirect(`http://${reqUrl.host}/dashboard/${project ? project[0]?.id: 'newProject'}`);
+  }
+  
+  if(reqUrl.pathname.endsWith('/write')) {
+    return NextResponse.redirect(`http://${reqUrl.host}/write/${project ? project[0]?.id: 'newProject'}`);
+  }
+  
   return res;
 }
 
