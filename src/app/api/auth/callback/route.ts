@@ -12,11 +12,8 @@ export async function GET(request: NextRequest) {
     const supabase = createRouteHandlerClient({ cookies })
     await supabase.auth.exchangeCodeForSession(code)
     const { data } = await supabase.from('project').select('id')
-    if(data?.length) {
-      return NextResponse.redirect(`${requestUrl.origin}/dashboard/${data && data[0] ? data[0].id : ''}`)
-    } else {
-      return NextResponse.redirect(`${requestUrl.origin}/dashboard/createNewProject`)  
-    }
+    return NextResponse.redirect(`${requestUrl.origin}/dashboard/projects`)
+    
   }
   return NextResponse.error()
 }
