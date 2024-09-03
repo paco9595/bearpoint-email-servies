@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import { cn } from "@/lib/utils";
-import Layout from "@/components/common/layout/dashboard";
+import MainDashboardLayout from "@/components/common/layout/mainDashboard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "h-screen flex flex-col")}>
-        <Layout>
+      <body className={cn(inter.className, "h-screen flex flex-col bg-foreground text-white")}>
+        <MainDashboardLayout>
           {children}
-        </Layout>
+        </MainDashboardLayout>
       </body>
     </html>
   );

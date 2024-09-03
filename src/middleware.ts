@@ -34,11 +34,7 @@ export async function middleware(req: NextRequest) {
   }
 
   if(reqUrl.pathname.endsWith('/dashboard')) {
-    return NextResponse.redirect(`http://${reqUrl.host}/dashboard/${project ? project[0]?.id: 'newProject'}`);
-  }
-  
-  if(reqUrl.pathname.endsWith('/write')) {
-    return NextResponse.redirect(`http://${reqUrl.host}/write/${project ? project[0]?.id: 'newProject'}`);
+    return NextResponse.redirect(`http://${reqUrl.host}/dashboard/projects`);
   }
   
   return res;
