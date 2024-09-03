@@ -15,7 +15,7 @@ export default async function DashboardProjectsPage() {
           <div className="min-h-44 h-full my-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-3 md:gap-5 ">
 
             {projects.map(({ id, name: projectName, description }: { id: string, name: string, description: string }) => (
-              <Card key={id} className='rounded-[5px] px-5 py-6'>
+              <Card key={id} className='rounded-[5px] px-5 py-6 border-border'>
                 <div className='flex justify-between'>
                   <div>
                     {projectName}
@@ -28,7 +28,7 @@ export default async function DashboardProjectsPage() {
               </Card>
             ))}
             {projects.length == 0 && (
-              <div className="text-sm text-muted-foreground bg-foreground">
+              <div className="text-sm text-muted-foreground">
                 Not projects jet
               </div>
             )}
