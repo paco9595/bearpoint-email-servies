@@ -9,7 +9,7 @@ export default async function MainDashboardLayout({ children }: { children: Reac
   const { data: organizations } = await supabase.from('organization').select('name, id')
   return (
     <div className="flex">
-      <nav className="max-w-64 h-screen w-full border-r border-r-border">
+      <nav className="max-w-64 h-screen w-full border-r-2 border-r-border">
         <div className="h-12 flex items-center px-6 border-b border-b-border">
           <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
             Dashboard
