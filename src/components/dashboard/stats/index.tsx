@@ -5,7 +5,7 @@ import { SessionStorageEnum, getSessionStorage } from "@/utils/session-storage";
 import { useEffect, useState } from "react";
 import Card from "@/components/common/card";
 
-export default function Stats() {
+export default function   Stats() {
   const [subscriber, setSubscriber] =
     useState<any>();
   const supabase = createClientComponentClient();
@@ -25,7 +25,7 @@ export default function Stats() {
   }, []);
 
   return (
-    <Card className="grid grid-cols-1 md:grid-cols-3 border-slate-200 border">
+    <Card className="grid grid-cols-1 md:grid-cols-3 border-border border bg-background">
       <StatsItem title="Subscribers" count={subscriber} average="100" />
       <StatsItem title="Open Rate" count={10} average="100" />
       <StatsItem title="Click Rate" count={10} average="100" />
