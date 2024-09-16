@@ -2,9 +2,7 @@ import Resources from "@/components/dashboard/resources";
 import Stats from "@/components/dashboard/stats";
 import { SubscriptionChart } from "@/components/dashboard/stats/chart";
 import { subtractionMonth } from "@/utils/subtractionMonth";
-import {
-  createServerComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 const test = [
@@ -43,26 +41,23 @@ export default async function Dashboard({
 }: {
   params: { projectId: string };
 }) {
-
   const supabase = createServerComponentClient({ cookies });
+  const { data:subscriptions, error } = await supabase
+    .rpc('get_registros_usuarios_mes', { id_project: projectId })  // Pasa el ID dinámico como parámetro
   
-  const { data: subscriptions } = await supabase
-    .from("subscriber")
-    .select("*")
-    .eq("id_project", projectId)
-    .gte("created_at", subtractionMonth(7));
-
+  if (error) {
+    console.error('Error al obtener los datos:', error)
+    return
+  }
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[75%_25%] flex-1 ">
+    <div className="grid grid-cols-1 flex-1">
       <div className="flex flex-col">
         <Stats />
-        <div className="flex flex-1 flex-col max-h-screen my-5">
-          <SubscriptionChart data={test} />
+        <div className="flex flex-1 flex-col max-h-screen mt-5">
+          <SubscriptionChart data={subscriptions || []} />
         </div>
       </div>
-      <div className="hidden lg:block ml-8 mb-5">
-        <Resources />
-      </div>
+     
     </div>
   );
 }
