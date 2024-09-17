@@ -33,14 +33,14 @@ export function SubscriptionChart({data}: {data: {date: string, count: number}[]
         >
           <CartesianGrid strokeDasharray="2 2"/>
           <XAxis dataKey="date" >
-            <Label value="Pages of my website" offset={0} position="insideBottom"  className="my-2" />
+            <Label value="days of the month" offset={0} position="insideBottom"  className="my-2" />
           </XAxis>
           <YAxis domain={['dataMin', 'dataMax+4']}/>
           <Tooltip cursor={{ stroke: 'bg-foreground', strokeWidth: 2 }} />
           <Line
             label={<div className="text-red-500">Month</div>}
             type="monotone"
-            dataKey="subscription"
+            dataKey="subscribers"
             stroke="#15593b"
             strokeWidth={3}
             fill="#15593b"

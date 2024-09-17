@@ -12,15 +12,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  params
+  params: { projectId },
 }: Readonly<{
   children: React.ReactNode;
-  params: { id: string }
+  params: { projectId: string };
 }>) {
   return (
-  <ProjectDashboardLayout>
-    {children}
-    
-  </ProjectDashboardLayout>
-  )
+    <ProjectDashboardLayout idProject={projectId}>
+      {children}
+    </ProjectDashboardLayout>
+  );
 }

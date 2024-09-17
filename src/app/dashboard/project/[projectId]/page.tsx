@@ -43,7 +43,7 @@ export default async function Dashboard({
 }) {
   const supabase = createServerComponentClient({ cookies });
   const { data:subscriptions, error } = await supabase
-    .rpc('get_registros_usuarios_mes', { id_project: projectId })  // Pasa el ID dinámico como parámetro
+    .rpc('get_registros_usuarios_mes', { id_project: projectId })
   
   if (error) {
     console.error('Error al obtener los datos:', error)
