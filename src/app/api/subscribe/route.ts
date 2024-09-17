@@ -22,16 +22,16 @@ export async function POST(
 
     const supabase = createRouteHandlerClient({ cookies });
     console.log({ id_project, email });
-    const { error, data } = await supabase.from("subscriber").insert([
-      {
-        id_project: id_project,
-        email: email
-      },
-    ]);
+    // const { error, data } = await supabase.from("subscriber").insert([
+    //   {
+    //     id_project: id_project,
+    //     email: email
+    //   },
+    // ]);
 
-    console.log({ error, data });
+    // console.log({ error, data });
 
-    return Response.json({ data, error }, { status: 200 });
+    return Response.json({ data: 'success'}, { status: 200 });
   } catch (error: any) {
     if (error.name === "ValidationError") {
       return Response.json({ error: error.message }, { status: 422 });
