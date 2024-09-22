@@ -5,20 +5,20 @@ import { ReactNode } from "react";
 import Subtitles from "./subTitle";
 
 export default async function ProjectDashboardLayout({
+  idProject,
   children,
 }: {
   children: ReactNode;
+  idProject: string
 }) {
   const supabase = await createServerComponentClient({ cookies });
-  const { data: organizations } = await supabase
-    .from("organization")
-    .select("name, id");
+  
   return (
     <div className="flex">
       <nav className="max-w-64 h-screen w-full border-r-2 border-r-border">
         <div className="h-12 flex items-center px-6 border-b border-b-border">
           <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-            Dashboard
+            Templates
           </h4>
         </div>
         <div className="px-6 py-5">
@@ -27,24 +27,13 @@ export default async function ProjectDashboardLayout({
             All Projects
           </Link>
         </div>
-        <div className="px-6 py-5 border-y border-y-border">
-          <p className="text-sm text-muted-foreground mb-3">Organization</p>
-          <ul>
-            {organizations?.map(({ id, name }) => (
-              <li className={"my-2"} key={id}>
-                <Link href={"/dashboard/projects"} className="text-sm">
-                  {name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* account */}
         <div className="px-6 py-5 border-b border-b-border">
-          <p className="text-sm text-muted-foreground mb-3">Account</p>
+          <p className="text-sm text-muted-foreground mb-3">Project</p>
           <ul>
             <li>
-              <Link href={"/dashboard/projects"} className="text-sm">
-                Preferences
+              <Link href={`/dashboard/project/${idProject}/settings`} className="text-sm">
+                Settings
               </Link>
             </li>
             <li>
