@@ -1,6 +1,8 @@
 "use client";
 import Card from "@/components/common/card";
 import CreateNewProject from "@/components/dashboard/newProject";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -9,20 +11,15 @@ import { useEffect, useState } from "react";
 export default function DashboardProjectsPage() {
   const supabase = createClientComponentClient();
   const router = useRouter();
+  const [searchFilter, setSearchFilter] = useState<string>("");
   const [organizations, setOrganizations] =
     useState<{ id: string; name: string; project: any[] }[]>();
+  const [isCreateNewProjectOpen, setIsOpenProjectOpen] =
+    useState<boolean>(false);
 
-  useEffect(() => {
-    const getOrganizationData = async () => {
-      const { data, error } = await supabase
-        .from("organization")
-        .select("*, project(*)")
-        .order('created_at', {ascending: true})
-      if (!error) {
-        setOrganizations(data);
-      }
-    };
-    const project = supabase
+
+  useEffect(()=> {
+    supabase
       .channel("custom-insert-channel")
       .on(
         "postgres_changes",
@@ -44,18 +41,54 @@ export default function DashboardProjectsPage() {
         }
       )
       .subscribe();
+  },[])
+
+  useEffect(() => {
+    console.log("test")
+    const getOrganizationData = async () => {
+      const { data, error } = await supabase
+        .from("organization")
+        .select("*, project(*)")
+        .ilike('project.name', `%${searchFilter}%`)
+        .order("created_at", { ascending: true });
+      if (!error) {
+        setOrganizations(data);
+      }else {
+        console.log(error);
+      }
+    };
     getOrganizationData();
-  },[]);
+  }, [searchFilter]);
 
   const clickHandler = (projectId: string) => {
-    router.push(`/dashboard/project/${projectId}`,);
+    router.push(`/dashboard/project/${projectId}`);
   };
+
   return (
     <>
-      <CreateNewProject />
+      <CreateNewProject
+        isOpen={isCreateNewProjectOpen}
+        onClose={() => setIsOpenProjectOpen(false)}
+      />
+      <div className="flex">
+        <Button
+          className="px-2 py-1 h-7 text-xs font-light"
+          onClick={() => setIsOpenProjectOpen(true)}
+        >
+          New project
+        </Button>
+        <div>
+          <Input
+            className="ml-3 h-7 text-xs font-light"
+            placeholder="Search for a project"
+            value={searchFilter}
+            onChange={(e) => setSearchFilter(e.target.value)}
+          />
+        </div>
+      </div>
       {organizations?.map(
         ({ id, name: organizationName, project: projects }) => (
-          <div key={id} className="mb-4 first:mt-0 mt-5 last:mb-0">
+          ((searchFilter.length > 0 && projects.length > 0) || searchFilter.length == 0) && (<div key={id} className="mb-4 first:mt-0 mt-5 last:mb-0">
             <p>{organizationName}</p>
             <div className="min-h-44 h-full my-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-3 md:gap-5 ">
               {projects.map(
@@ -91,7 +124,7 @@ export default function DashboardProjectsPage() {
                 </div>
               )}
             </div>
-          </div>
+          </div>)
         )
       )}
     </>
